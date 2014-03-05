@@ -73,29 +73,29 @@ $foo[1];
 ```
 
 The above configuration will output:
-Error code: 8
+* Error code: 8
 
 There will be a text error log (2014-03-05_error.log) with this information:
-[05-Mar-2014 06:31:01 US/Eastern] PHP Notice:  Undefined variable: foo in ...\localhost\public\index.php on line 71
-[05-Mar-2014 06:31:01 US/Eastern] PHP Stack trace:
-[05-Mar-2014 06:31:01 US/Eastern] PHP   1. {main}() ...\localhost\public\index.php:0
+* [05-Mar-2014 06:31:01 US/Eastern] PHP Notice:  Undefined variable: foo in ...\localhost\public\index.php on line 71
+* [05-Mar-2014 06:31:01 US/Eastern] PHP Stack trace:
+* [05-Mar-2014 06:31:01 US/Eastern] PHP   1. {main}() ...\localhost\public\index.php:0
 
 There will also be an HTML error log (2014-03-05_error.log.html) with this information:
-Website Error
-NOTICE: Undefined variable: foo
-...\localhost\public\index.php on line 71
-Stack trace:
-1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71
+* Website Error
+* NOTICE: Undefined variable: foo
+* ...\localhost\public\index.php on line 71
+* Stack trace:
+* 1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71
 
-Additional Information
-Remote Address: ::1
-Browser: Mozilla/5.0 (Windows NT 6.1; WOW64)
-Query:
-Method: GET
-PHP File: /index.php
-PHP Script: /index.php
-URI: /
-Protocol: HTTP/1.1
+* Additional Information
+* Remote Address: ::1
+* Browser: Mozilla/5.0 (Windows NT 6.1; WOW64)
+* Query:
+* Method: GET
+* PHP File: /index.php
+* PHP Script: /index.php
+* URI: /
+* Protocol: HTTP/1.1
 
 Session
 Array
