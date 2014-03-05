@@ -2,14 +2,14 @@ SurfStack Error Handling in PHP
 ========================
 
 Single class that registers a shutdown function and an error handler to provide
-detailed error logging in both SESSION variable and HTML files.
+detailed error logging in both the $_SESSION superglobal and an HTML file.
 
 The class handles both fatal and non-fatal errors. Non-fatal errors will allow
 the page to load. Fatal errors will try to reload the page once more and it the
 error still occurs, it will try to access the parent page. If that page also
 throws an error, an HTTP 500 page will display.
 
-In your main application file like index.php, follow these instructions.
+In your main application file (index.php), follow these instructions.
 
 ```php
 <?php
@@ -30,13 +30,14 @@ ini_set('log_errors', 1);
 // if blLogHTMLErrors = true
 ini_set('error_log', dirname($_SERVER['DOCUMENT_ROOT']).'/private/log/'.date('Y-m-d', time()).'_error.log');
 
-// Start a session to prevent excessive loops
+// Start a session to prevent excessive loops with fatal errors
 session_start();
 
 // Create an instance of the Error Handler
 $eHandler = new SurfStack\ErrorHandling\ErrorHandler();
 
 // Register the error handler and shutdown function
+// You can also register them individually
 $eHandler->register();
 
 // Use the default PHP handler for output to screen and output to file after
@@ -83,18 +84,18 @@ There will also be an HTML error log (2014-03-05_error.log.html) with this infor
 Website Error
 NOTICE: Undefined variable: foo
 ...\localhost\public\index.php on line 71
-Stack trace: 
-#1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71 
+Stack trace:
+1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71
 
-Additional Information 
-Remote Address: ::1 
+Additional Information
+Remote Address: ::1
 Browser: Mozilla/5.0 (Windows NT 6.1; WOW64)
-Query: 
-Method: GET 
-PHP File: /index.php 
-PHP Script: /index.php 
-URI: / 
-Protocol: HTTP/1.1 
+Query:
+Method: GET
+PHP File: /index.php
+PHP Script: /index.php
+URI: /
+Protocol: HTTP/1.1
 
 Session
 Array
