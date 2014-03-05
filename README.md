@@ -90,7 +90,7 @@ Website Error
 NOTICE: Undefined variable: foo
 ...\localhost\public\index.php on line 71
 Stack trace:
-1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71
+#1 index.php : SurfStack\ErrorHandling\ErrorHandler->errorHandler() on line 71
 
 Additional Information
 Remote Address: ::1
@@ -116,7 +116,6 @@ Post
 Array
 (
 )
-
 
 Generated: Mar 05, 2014 at 06:31 AM
 ```
