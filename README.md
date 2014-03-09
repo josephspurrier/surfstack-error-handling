@@ -176,3 +176,5 @@ function logAndGetError()
     return $eMessage;
 }
 ```
+
+To install using composer, use the code from the Wiki page [Composer Wiki page](../../wiki/Composer).
