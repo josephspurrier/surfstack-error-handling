@@ -74,7 +74,10 @@ class ErrorHandler
      * Handle shutdowns
      */
     public function shutdownHandler()
-    {
+    {        
+        // Start the session
+        session_start();
+        
         // Load the last error message
         $error = error_get_last();
         
@@ -218,7 +221,7 @@ class ErrorHandler
             echo 'Error code: '.$e->getCode();
         }
 
-        // If a redirect needs to occurr
+        // If a redirect needs to occur
         $blFatalRedirect = false;
         
         switch ($e->getCode())
@@ -310,7 +313,7 @@ class ErrorHandler
             $errorFile = ini_get('error_log').'.html';
             file_put_contents($errorFile, $_SESSION['error'].'<hr><br />', FILE_APPEND);
         }
-
+        
         // If there is a fatal error, redirect immediately
         if ($blFatalRedirect)
         {
@@ -568,8 +571,8 @@ class ErrorHandler
         ob_end_clean();
         
         // Show error message
-        echo 'Error: Page loop occurred';
         header('HTTP/1.0 500 Internal Server Error');
+        echo 'Error: Page loop occurred';
     }
     
     /**
@@ -578,6 +581,7 @@ class ErrorHandler
     public function showAdminError()
     {
         // Show the admin error
+        header('HTTP/1.0 500 Internal Server Error');
         echo nl2br(PHP_EOL).nl2br(PHP_EOL).'Admin Error Debug Enabled: Page loop occurred'.nl2br(PHP_EOL);
         echo $this->getBufferedArray(error_get_last());
     }
