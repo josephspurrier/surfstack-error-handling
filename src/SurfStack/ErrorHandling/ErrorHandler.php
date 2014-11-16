@@ -75,9 +75,6 @@ class ErrorHandler
      */
     public function shutdownHandler()
     {        
-        // Start the session
-        if (session_id() === '') session_start();
-        
         // Load the last error message
         $error = error_get_last();
         
@@ -170,7 +167,7 @@ class ErrorHandler
         }
         // Else an error does not exist and the script finishes or exit() or die()
         else
-        {
+        {            
             // A successful pageload will clear up the errorLoop variable
             if (isset($_SESSION['errorLoop'])) unset($_SESSION['errorLoop']);
         }
@@ -302,7 +299,9 @@ class ErrorHandler
         	    $econstant = "ERROR";
         	    $edescription = "Problem with code.";
         }
-
+        
+        if (!$this->isSessionStarted()) session_start();
+        
         // Save the error information
         $_SESSION['error'] = $this->generateDetailedLog($e, $econstant, $edescription);
         
@@ -344,6 +343,7 @@ class ErrorHandler
                 $_SESSION['errorLoop'] = 1;
                 header("location: ".dirname($_SERVER['REQUEST_URI']));
             }
+            
             exit;
         }
         
@@ -585,16 +585,25 @@ class ErrorHandler
         echo nl2br(PHP_EOL).nl2br(PHP_EOL).'Admin Error Debug Enabled: Page loop occurred'.nl2br(PHP_EOL);
         echo $this->getBufferedArray(error_get_last());
     }
+
+    /**
+     * Determines is a session is started
+     * Source: http://php.net/manual/en/function.session-status.php
+     * @return boolean
+     */
+    function isSessionStarted()
+    {
+        if (php_sapi_name() !== 'cli')
+        {
+            if (version_compare(phpversion(), '5.4.0', '>='))
+            {
+                return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+            }
+            else 
+            {
+                return session_id() === '' ? FALSE : TRUE;
+            }
+        }
+        return FALSE;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
