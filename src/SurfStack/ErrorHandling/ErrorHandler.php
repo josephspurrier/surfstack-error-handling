@@ -76,7 +76,7 @@ class ErrorHandler
     public function shutdownHandler()
     {        
         // Start the session
-        session_start();
+        if (session_id() === '') session_start();
         
         // Load the last error message
         $error = error_get_last();
