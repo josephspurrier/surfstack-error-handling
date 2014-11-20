@@ -50,8 +50,8 @@ class ErrorHandler
      */
     public function register()
     {
-        register_shutdown_function(array($this, 'shutdownHandler'));
-        set_error_handler(array($this, 'errorHandler'));
+        $this->registerShutdownFunction();
+        $this->registerErrorHandler();
     }
     
     /**
@@ -74,7 +74,7 @@ class ErrorHandler
      * Handle shutdowns
      */
     public function shutdownHandler()
-    {        
+    {
         // Load the last error message
         $error = error_get_last();
         
@@ -167,9 +167,8 @@ class ErrorHandler
         }
         // Else an error does not exist and the script finishes or exit() or die()
         else
-        {            
-            // A successful pageload will clear up the errorLoop variable
-            if (isset($_SESSION['errorLoop'])) unset($_SESSION['errorLoop']);
+        {
+            // Do nothing
         }
     }
     
@@ -300,7 +299,11 @@ class ErrorHandler
         	    $edescription = "Problem with code.";
         }
         
-        if (!$this->isSessionStarted()) session_start();
+        // Start the session is not started
+        if (!$this->isSessionStarted())
+        {
+            session_start();
+        }
         
         // Save the error information
         $_SESSION['error'] = $this->generateDetailedLog($e, $econstant, $edescription);
@@ -317,7 +320,7 @@ class ErrorHandler
         if ($blFatalRedirect)
         {
             // If there are 2 fatal errors in a row, redirect to a page_not_found
-            if (isset($_SESSION['errorLoop']) && $_SESSION['errorLoop']>2)
+            if ($_SERVER['REQUEST_URI'] == '/')
             {
                 if (function_exists('isAdmin') && isAdmin())
                 {
@@ -331,17 +334,10 @@ class ErrorHandler
                 // This prevents the errors from piling up
                 $this->clearErrorBacklog();
             }
-            // Else if there is 1 fatal error, redirect to the parent page
-            else if (isset($_SESSION['errorLoop']))
-            {
-                $_SESSION['errorLoop'] += 1;
-                header("location: ".$_SERVER['REQUEST_URI']);
-            }
-            // Else this is the first fatal error, redirect to the same page
+            // Else this is the first fatal error, redirect to the parent page
             else
             {
-                $_SESSION['errorLoop'] = 1;
-                header("location: ".dirname($_SERVER['REQUEST_URI']));
+                header('Location: '.dirname($_SERVER['REQUEST_URI']));
             }
             
             exit;
